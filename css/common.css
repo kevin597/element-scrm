@@ -1,0 +1,380 @@
+html,
+body,
+#app,
+.el-container {
+    height: 100%;
+    overflow: hidden;
+}
+
+.el-main {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.el-date-editor.el-input,
+.w142 {
+    width: 142px !important;
+}
+
+.el-date-editor--daterange.el-input__inner {
+    width: 300px;
+}
+
+.box-border {
+    border: 1px solid #cccccc;
+    border-radius: 2px;
+    width: 700px;
+}
+
+.el-dialog__body {
+    padding: 20px;
+    overflow: hidden;
+    box-sizing: border-box;
+    height: 474px;
+}
+
+.el-dialog__header {
+    background-color: #f7f7f7;
+    padding: 20px;
+}
+
+.el-dialog__footer {
+    background-color: #f7f7f7;
+    padding: 15px 20px;
+}
+
+.el-dialog {
+    width: 800px;
+    height: 600px;
+}
+
+.dialog-box {
+    box-sizing: border-box;
+    height: 434px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.box-border2 {
+    border: 1px solid #cccccc;
+    border-radius: 2px;
+    width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+/* components tree start */
+
+.d-tree .el-dialog__body {
+    height: 536px;
+    padding: 0;
+}
+
+.d-tree .v-body {
+    padding: 20px;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.d-tree .dialog-footer {
+    background-color: #f7f7f7;
+    padding: 15px 20px;
+    text-align: right;
+    width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+    display: block;
+}
+
+/* components tree end */
+
+.border {
+    border: 1px solid #E7E7E7;
+}
+
+.border-b {
+    border: 1px solid #3DA4E7;
+}
+
+.el-tabs--border-card {
+    box-shadow: none;
+    -webkit-box-shadow: none;
+}
+
+
+.dialog-small .el-dialog {
+    width: 640px;
+    height: 440px;
+}
+
+.dialog-small .el-dialog__body {
+    height: 314px;
+}
+
+.dialog-small .dialog-box {
+    height: 274px;
+}
+
+.dialog-big .el-dialog__body {
+    padding: 14px 20px;
+}
+
+.dialog-big .el-dialog {
+    width: 1000px;
+    height: 744px;
+    margin-top: 0 !important;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.dialog-big .el-dialog__body {
+    height: 780px;
+}
+
+.dialog-big .dialog-box {
+    height: 740px;
+}
+
+.echart {
+    height: 350px;
+    overflow: hidden;
+}
+
+.is-scrolling-none::-webkit-scrollbar {
+    width: 4px;
+}
+
+.is-scrolling-none::-webkit-scrollbar-track-piece {
+    border-radius: 0px;
+    background-color: #D1D1D1;
+}
+
+.is-scrolling-none::-webkit-scrollbar-thumb {
+    background-color: #999999;
+    border-radius: 4px;
+}
+
+.is-scrolling-none::-webkit-scrollbar-thumb:hover {
+    background-color: #999999;
+}
+
+.zou-table .el-table th {
+    background-color: #f7f7f7;
+    padding: 6px 0;
+}
+
+.zou-table .el-table td {
+    padding: 8px 0;
+}
+
+.zou-card {
+    height: 350px;
+    overflow: auto;
+}
+
+.zou-card .el-card {
+    padding: 10px;
+    margin: 10px;
+    overflow: hidden;
+    background-color: #f7f7f7 !important
+}
+
+.zou-card .zou-card-box {
+    flex: 0 0 50%;
+    position: relative;
+}
+
+.zou-card .el-card__body {
+    height: 116px;
+    overflow: hidden;
+    cursor: pointer;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+.zou-card .zou-card-sel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 358px;
+    height: 142px;
+    margin: 10px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    font-size: 40px;
+    background-color: rgba(255, 255, 255, .6);
+}
+
+.zou-card-content img {
+    display: inline !important;
+    vertical-align: middle;
+}
+
+.el-textarea__inner::-webkit-scrollbar {
+    width: 4px;
+}
+
+.el-textarea__inner::-webkit-scrollbar-track-piece {
+    border-radius: 0px;
+    background-color: #D1D1D1;
+}
+
+.el-textarea__inner::-webkit-scrollbar-thumb {
+    background-color: #999999;
+    border-radius: 4px;
+}
+
+.el-textarea__inner::-webkit-scrollbar-thumb:hover {
+    background-color: #999999;
+}
+
+.dialog-big2 .el-dialog {
+    height: 744px;
+}
+
+.dialog-big2 .el-dialog__body {
+    height: 620px;
+}
+
+.dialog-big2 .dialog-box {
+    height: 590px;
+}
+
+
+.zou-tabs-pic .el-image,
+.zou-tabs-pic .image-slot {
+    width: 200px;
+    height: 200px;
+}
+
+.zou-tabs-pic .image-slot {
+    background-color: #f7f7f7;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.zou-upload-btn {
+    width: 120px;
+    height: 120px;
+    border: 1px dashed #d9d9d9;
+}
+
+
+.zou-card .zou-card-img {
+    flex: 0 0 20%;
+    position: relative;
+}
+
+.zou-card .zou-img-pic {
+    margin: 10px;
+}
+
+.zou-card .zou-img-pic img {
+    height: 130px;
+    width: 130px;
+    box-sizing: border-box;
+    border: 1px solid #f7f7f7;
+}
+
+.zou-card-sel-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 130px;
+    height: 156px;
+    margin: 10px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    font-size: 40px;
+    background-color: rgba(255, 255, 255, .6);
+}
+
+.zou-form {
+    width: 560px;
+}
+
+.zou-form .el-input {
+    width: 300px;
+}
+
+.zou-upload-btn2 {
+    width: 160px;
+    height: 160px;
+    border: 1px dashed #d9d9d9;
+    box-sizing: border-box;
+}
+
+.webpic-del {
+    width: 160px;
+    height: 160px;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, .5);
+    display: none !important;
+}
+
+.webpic-box:hover .webpic-del {
+    display: flex !important;
+}
+
+.webimg-box {
+    width: 62px;
+    height: 62px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.webimg-box-80 {
+    width: 82px;
+    height: 82px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+}
+
+.img80 {
+    width: 82px;
+    height: 82px;
+}
+
+/* emoji表情 */
+.emoji-box {
+    width: 100%;
+    height: 180px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    align-content: flex-start;
+}
+
+.emoji-btn-box {
+    border: 1px solid #dddddd;
+    border-collapse: collapse;
+    margin: 0 -1px -1px 0;
+    width: 34px;
+    height: 34px;
+    padding: 2px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.editor-face-img {
+    width: 26px;
+    height: 26px;
+    display: inline !important;
+    vertical-align: middle;
+}

@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 ,user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="icon" href="data:;base64,=">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/doumee.css">
+    <link rel="stylesheet" href="./element/index.css">
+    <link rel="stylesheet" href="./css/common.css">
+</head>
+
+<body>
+    <div id="app" v-cloak>
+        <el-container>
+            <!-- 头部 -->
+            <el-header class="bg-g">
+                <div class="flex-row ptb15">
+                    <div class="fs14 c6">新建渠道活码</div>
+                    <div class="flex-full"></div>
+                    <el-button type="primary" size="small">返回列表</el-button>
+                </div>
+            </el-header>
+            <!-- 中部 -->
+            <el-main class="scroll">
+                <div class="form-box">
+                    <!-- 活码名称 -->
+                    <div class="flex-row h44">
+                        <div class="w120 flex-row flex-right">
+                            <div class="fwb cr mr5">*</div>
+                            <div class="c9">活码名称：</div>
+                        </div>
+                        <div class="flex-full ml20">
+                            <div class="w300">
+                                <el-input placeholder="请输入名称" v-model="input" size="small" clearable>
+                                </el-input>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 添加设置 -->
+                    <div class="flex-row h44">
+                        <div class="w120 flex-row flex-right">
+                            <div class="c9">添加设置：</div>
+                        </div>
+                        <div class="flex-full ml20">
+                            <el-checkbox v-model="checked">客户添加时无需经过确认自动成为好友</el-checkbox>
+                        </div>
+                    </div>
+                    <!-- 渠道 -->
+                    <div class="flex-row h44">
+                        <div class="w120 flex-row flex-right">
+                            <div class="c9">渠道：</div>
+                        </div>
+                        <div class="flex-full ml20">
+                            <div class="w300">
+                                <el-select v-model="value" filterable placeholder="请选择" size="small" class="wfull">
+                                    <el-option v-for="item in Qptions" :key="item.value" :label="item.label"
+                                        :value="item.label">
+                                    </el-option>
+                                </el-select>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 类型 -->
+                    <div class="flex-row h44">
+                        <div class="w120 flex-row flex-right">
+                            <div class="fwb cr mr5">*</div>
+                            <div class="c9">类型：</div>
+                        </div>
+                        <div class="flex-full ml20">
+                            <el-radio-group v-model="radio" @change="onRadioChange">
+                                <el-radio :label="0">单人</el-radio>
+                                <el-radio :label="1">多人</el-radio>
+                            </el-radio-group>
+                        </div>
+                    </div>
+                    <!-- 默认员工 -->
+                    <div class="flex-row h44">
+                        <div class="w120 flex-row flex-right">
+                            <div class="fwb cr mr5">*</div>
+                            <div class="c9">默认员工：</div>
+                        </div>
+                        <div class="flex-full ml20 flex-row">
+                            <!-- 单人 -->
+                            <el-button plain icon="el-icon-user" size="small" v-if="radio==0"
+                                @click="handleOpen('key',0,defaultList.personnel,2)">
+                                {{defaultList.personnel.length==0?'选择企业人员':defaultList.personnel[0].label}}
+                            </el-button>
+                            <!-- <el-select v-model="defaultList.personnel" size="small" filterable placeholder="选择企业人员"
+                                class="w142" v-if="radio==0">
+                                <el-option v-for="item in peoples" :key="item.id" :label="item.label"
+                                    :value="item.label" :disabled="item.disabled">
+                                </el-option>
+                            </el-select> -->
+                            <!-- 多人 -->
+                            <div class="flex-row flex-left" v-if="radio==1">
+                                <el-button plain icon="el-icon-user" size="small"
+                                    @click="handleOpen('key',0,defaultList.personnel,2)">
+                                    {{defaultList.personnel.length==0?'选择企业人员':'选择了'+defaultList.personnel.length+'人'}}
+                                </el-button>
+                                <el-select v-model="defaultList.department" size="small" multiple placeholder="请选择部门"
+                                    class="w300 ml10">
+                                    <el-option v-for="item in options" :key="item.value" :label="item.label"
+                                        :value="item.label">
+                                    </el-option>
+                                </el-select>
+                                <el-tooltip class="item" effect="dark" placement="top">
+                                    <div slot="content">
+                                        选择企业成员和选择部门必须选择一<br />
+                                        个。选择部门后，扫码后最多可添加<br />
+                                        当前部门的企业成员。如原来某部门<br />
+                                        是5人，后新增1人，则客户最多可添<br />
+                                        加该部门6位企业成员
+                                    </div>
+                                    <i class="el-icon-question fs20 ml10"></i>
+                                </el-tooltip>
+                            </div>
+                            <div class="flex-full"></div>
+                        </div>
+                    </div>
+                    <!-- 周期排员 switch -->
+                    <div class="flex-row h44">
+                        <div class="w120 flex-row flex-right">
+                            <div class="c9">周期排员：</div>
+                        </div>
+                        <div class="ml20">
+                            <el-switch v-model="switch2" active-color="#3DA4E7">
+                            </el-switch>
+                        </div>
+                        <div class="ml20" v-if="switch2">
+                            <el-button plain icon="el-icon-plus" size="small" @click="handleAdd(100)">添加</el-button>
+                        </div>
+                        <div class="flex-full "></div>
+                    </div>
+                    <!-- 周期排员 -->
+                    <div class="box-border2" v-if="switch2">
+                        <!-- 周期表头 -->
+                        <div class="flex-row bg-g bottom-line h44">
+                            <div class="flex-full flex-row" v-for="(week,index) in weekOptions" :key="index">
+                                <div>{{week.cname}}</div>
+                                <i class="el-icon-edit c1 hand ml5" @click="handleAdd(index)"
+                                    v-if="week.list.length>0"></i>
+                            </div>
+                        </div>
+                        <!-- 周期列表 -->
+                        <div class="flex-row ptb10">
+                            <div class="flex-full boxb" v-for="(week,index) in weekOptions" :key="index">
+                                <div class="plr10" v-if="week.list.length>0">
+                                    <div v-for="(item,idx) in week.list" :key="idx">
+                                        <div>{{item.startTime}}~{{item.endTime}}</div>
+                                        <template v-if="radio==1">
+                                            <div class="nowrap" v-if="item.personnel.length>0">
+                                                <el-tooltip class="item" effect="dark"
+                                                    :content="item.personnel | jsonToString('label')" placement="top">
+                                                    <div class="nowrap">{{item.personnel | jsonToString('label')}}</div>
+                                                </el-tooltip>
+                                            </div>
+                                        </template>
+                                        <div v-else>{{item.personnel[0].label}}</div>
+                                        <div class="flex-row flex-wrap flex-left" v-if="item.department.length>0">
+                                            <el-tag size="mini" type="info" class="mr5 mt5"
+                                                v-for="(dep,i) in item.department" :key="i">{{dep}}</el-tag>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="plr10" v-else>--</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 特殊时期 switch -->
+                    <div class="flex-row h44">
+                        <div class="w120 flex-row flex-right">
+                            <div class="c9">特殊时期：</div>
+                        </div>
+                        <div class="flex-full ml20">
+                            <div class="flex-row">
+                                <el-switch v-model="switch1" active-color="#3DA4E7">
+                                </el-switch>
+                                <div class="flex-full cr ml10">如遇到国家节假日或是企业自身重要日子，在特殊时期内，需要更换活码成员</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- <div class="bottom-line ptb10 mt10">
+                        {{tssqTimeList}}
+                    </div>
+                    <div class="bottom-line ptb10 mt10">
+                        {{gdsdTimeList}}
+                    </div>
+                    <div class="bottom-line ptb10 mt10">
+                        {{weekOptions}}
+                    </div> -->
+
+                    <!-- 特殊时期 box -->
+                    <div class="box-border ptb15" v-if="switch1">
+                        <!-- 特殊时期 提醒 -->
+                        <div class="plr15">
+                            <el-alert description="1、系统默认生成一条每日24小时（00:00~00:00）数据，当时间点不在所新增的时段内，客户扫码后，添加的是“24小时”的企业成员。"
+                                type="warning" :closable="false" style="padding-bottom: 0;">
+                            </el-alert>
+                            <el-alert description="2、企业成员设置的时间段不允许出现时间交叉，例如：XXX的时间段位12:00~14:00，那么其他成员的时间设置不允许在这个时间段内。"
+                                type="warning" :closable="false" style="padding-top: 0;">
+                            </el-alert>
+                        </div>
+
+                        <!-- 特殊时期 list -->
+                        <div class="flex-row flex-top mt10" v-for="(value, name, index) in tssqTimeList" :key="index">
+                            <div class="w120 flex-row flex-right">特殊时期{{index+1}}：</div>
+                            <div class="flex-full ml20">
+                                <!-- 特殊时期的日期 -->
+                                <div class="w300">
+                                    <el-date-picker size="small" v-model="value.dataRange" type="daterange"
+                                        range-separator="至" start-placeholder="开始日期" format="yyyy年MM月dd日"
+                                        value-format="timestamp" end-placeholder="结束日期">
+                                    </el-date-picker>
+                                </div>
+                                <!-- 时间及人员 -->
+                                <div class="style-box" v-for="(item, idx) in value.timeRange" :key="idx">
+                                    <!-- 时间段 -->
+                                    <div class="mt10 flex-row flex-left">
+                                        <!-- 默认时间段，不可修改00：00-00：00 -->
+                                        <!-- <div class="flex-row flex-left" v-if="idx==0">
+                                            <el-input v-model="item.startTime" prefix-icon="el-icon-time" size="small"
+                                                :disabled="true" class="w142">
+                                            </el-input>
+                                            <div class="plr5 fs16 cb2">-</div>
+                                            <el-input v-model="item.endTime" prefix-icon="el-icon-time" size="small"
+                                                :disabled="true" class="w142">
+                                            </el-input>
+                                        </div> -->
+                                        <!-- 添加的时间段 -->
+                                        <div class="flex-row flex-left">
+                                            <el-time-select size="small" placeholder="起始时间" v-model="item.startTime"
+                                                class="w120"
+                                                :picker-options="{start:'00:00',end:'23:00',step: '01:00',maxTime:item.endTime}">
+                                            </el-time-select>
+                                            <div class="plr5 fs16 cb2">-</div>
+                                            <el-time-select size="small" placeholder="结束时间" v-model="item.endTime"
+                                                :picker-options="{start:'01:00',end:'24:00',step: '01:00',minTime: item.startTime}">
+                                            </el-time-select>
+                                        </div>
+                                        <div class="w200 ml10">
+                                            <!-- 多人 -->
+                                            <el-button plain icon="el-icon-user" size="small" v-if="radio==1"
+                                                @click="handleOpen(name,idx,item.personnel)">
+                                                {{item.personnel.length==0?'选择企业人员':'选择了'+item.personnel.length+'人'}}
+                                            </el-button>
+                                            <!-- 单人 -->
+                                            <el-button plain icon="el-icon-user" size="small" v-if="radio==0"
+                                                @click="handleOpen(name,idx,item.personnel)">
+                                                {{item.personnel.length==0?'选择企业人员':item.personnel[0].label}}
+                                            </el-button>
+                                            <!-- <el-select v-model="item.personnel" size="small" filterable
+                                                placeholder="选择企业人员" class="w142" v-if="radio==0">
+                                                <el-option v-for="item in peoples" :key="item.id" :label="item.label"
+                                                    :value="item.label" :disabled="item.disabled">
+                                                </el-option>
+                                            </el-select> -->
+                                        </div>
+                                    </div>
+
+                                    <!-- 请选择部门 -->
+                                    <div class="mt10 flex-row flex-left" v-if="radio==1">
+                                        <el-select v-model="item.department" size="small" multiple placeholder="请选择部门"
+                                            class="w300">
+                                            <el-option v-for="item in options" :key="item.value" :label="item.label"
+                                                :value="item.label">
+                                            </el-option>
+                                        </el-select>
+                                        <el-tooltip class="item" effect="dark" placement="top"
+                                            v-if="value.timeRange.length==(idx+1)">
+                                            <div slot="content">
+                                                选择企业成员和选择部门必须选择一<br />
+                                                个。选择部门后，扫码后最多可添加<br />
+                                                当前部门的企业成员。如原来某部门<br />
+                                                是5人，后新增1人，则客户最多可添<br />
+                                                加该部门6位企业成员
+                                            </div>
+                                            <i class="el-icon-question fs20 ml10"></i>
+                                        </el-tooltip>
+                                    </div>
+
+                                    <!-- 添加，删除按钮 -->
+                                    <div class="mt10 flex-row flex-left" v-if="value.timeRange.length>1">
+                                        <el-link type="primary" class="mr10" @click="tssqTimePush(name)"
+                                            v-if="value.timeRange.length==(idx+1)">添加</el-link>
+                                        <el-link type="danger" class="mr10" @click="tssqTimeDel(name,idx)" v-if="idx>0">
+                                            删除
+                                        </el-link>
+                                    </div>
+                                </div>
+
+                                <!-- 添加按钮 -->
+                                <div class="mt10 flex-row flex-left" v-if="value.timeRange.length==1">
+                                    <el-link type="primary" class="mr10" @click="tssqTimePush(name)">添加</el-link>
+                                </div>
+
+                                <!-- 添加，删除特殊时期 -->
+                                <div class="mt10 flex-row flex-right pr15" v-if="Object.keys(tssqTimeList).length>1">
+                                    <el-button type="primary" icon="el-icon-plus" size="mini" @click="tssqTimeAdd()"
+                                        v-if="Object.keys(tssqTimeList).length==(index+1)">
+                                        添加时期
+                                    </el-button>
+                                    <i class="el-icon-delete fs20 cr ml15 hand" @click="tssqDateDel(name)"></i>
+                                </div>
+
+                                <!-- 添加，删除特殊时期 -->
+                                <div class="mt10 flex-row flex-right pr15" v-if="Object.keys(tssqTimeList).length==1">
+                                    <el-button type="primary" icon="el-icon-plus" size="mini" @click="tssqTimeAdd()">
+                                        添加时期
+                                    </el-button>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <!-- 特殊时期 end -->
+
+                    </div>
+                </div>
+            </el-main>
+            <!-- 底部 -->
+            <el-footer class="bg-g">
+                <div class="flex-row ptb15">
+                    <div class="flex-full"></div>
+                    <el-button size="small">取消</el-button>
+                    <el-button type="primary" size="small" @click="bigSubmit">提交</el-button>
+                </div>
+            </el-footer>
+        </el-container>
+
+        <!-- 添加成员弹框 -->
+        <el-dialog title="添加企业成员" :visible.sync="dialogAddVisible">
+            <div class="boxb dialog-box scroll">
+                <!-- <div class="bottom-line pb10">{{gdsdTimeList}}</div>
+                <div class="ptb10">{{weekOptions}}</div> -->
+                <!-- 提醒 -->
+                <div class="plr5">
+                    <el-alert description="1、系统默认生成一条每日24小时（00:00~00:00）数据，当时间点不在所新增的时段内，客户扫码后，添加的是“24小时”的企业成员。"
+                        type="warning" :closable="false" style="padding-bottom: 0;">
+                    </el-alert>
+                    <el-alert description="2、企业成员设置的时间段不允许出现时间交叉，例如：XXX的时间段位12:00~14:00，那么其他成员的时间设置不允许在这个时间段内。"
+                        type="warning" :closable="false" style="padding-top: 0;">
+                    </el-alert>
+                </div>
+                <div class="flex-row flex-top mt10">
+                    <!-- 固定时段 -->
+                    <div class="w120 flex-row flex-right mt10">
+                        <div class="fwb cr mr5">*</div>
+                        <div class="c9">固定时段：</div>
+                    </div>
+                    <div class="flex-full ml20">
+                        <!-- 时间及人员 -->
+                        <div class="style-box" v-for="(item, idx) in gdsdTimeList" :key="idx">
+                            <!-- 时间段 -->
+                            <div class="mt10 flex-row flex-left">
+                                <!-- 默认时间段，不可修改00：00-00：00 -->
+                                <!-- <div class="flex-row flex-left" v-if="idx==0">
+                                    <el-input v-model="item.startTime" prefix-icon="el-icon-time" size="small"
+                                        :disabled="true" class="w142">
+                                    </el-input>
+                                    <div class="plr5 fs16 cb2">-</div>
+                                    <el-input v-model="item.endTime" prefix-icon="el-icon-time" size="small"
+                                        :disabled="true" class="w142">
+                                    </el-input>
+                                </div> -->
+                                <!-- 添加的时间段 -->
+                                <div class="flex-row flex-left">
+                                    <el-time-select size="small" placeholder="起始时间" v-model="item.startTime"
+                                        class="w120"
+                                        :picker-options="{start:'00:00',end:'23:00',step: '01:00',maxTime:item.endTime}">
+                                    </el-time-select>
+                                    <div class="plr5 fs16 cb2">-</div>
+                                    <el-time-select size="small" placeholder="结束时间" v-model="item.endTime"
+                                        :picker-options="{start:'01:00',end:'24:00',step: '01:00',minTime: item.startTime}">
+                                    </el-time-select>
+                                </div>
+                                <div class="w200 ml10">
+                                    <!-- 多人 -->
+                                    <el-button plain icon="el-icon-user" size="small" v-if="radio==1"
+                                        @click="handleOpen('key',idx,item.personnel,1)">
+                                        {{item.personnel.length==0?'选择企业人员':'选择了'+item.personnel.length+'人'}}
+                                    </el-button>
+                                    <!-- 单人 -->
+                                    <el-button plain icon="el-icon-user" size="small" v-if="radio==0"
+                                        @click="handleOpen('key',idx,item.personnel,1)">
+                                        {{item.personnel.length==0?'选择企业人员':item.personnel[0].label}}
+                                    </el-button>
+                                    <!-- <el-select v-model="item.personnel" size="small" filterable placeholder="选择企业人员"
+                                        class="w142" v-if="radio==0">
+                                        <el-option v-for="item in peoples" :key="item.id" :label="item.label"
+                                            :value="item.label" :disabled="item.disabled">
+                                        </el-option>
+                                    </el-select> -->
+                                </div>
+                            </div>
+
+                            <!-- 请选择部门 -->
+                            <div class="mt10 flex-row flex-left" v-if="radio==1">
+                                <el-select v-model="item.department" size="small" multiple placeholder="请选择部门"
+                                    class="w300">
+                                    <el-option v-for="item in options" :key="item.value" :label="item.label"
+                                        :value="item.label">
+                                    </el-option>
+                                </el-select>
+                                <el-tooltip class="item" effect="dark" placement="top"
+                                    v-if="gdsdTimeList.length==(idx+1)">
+                                    <div slot="content">
+                                        选择企业成员和选择部门必须选择一<br />
+                                        个。选择部门后，扫码后最多可添加<br />
+                                        当前部门的企业成员。如原来某部门<br />
+                                        是5人，后新增1人，则客户最多可添<br />
+                                        加该部门6位企业成员
+                                    </div>
+                                    <i class="el-icon-question fs20 ml10"></i>
+                                </el-tooltip>
+                            </div>
+
+                            <!-- 添加，删除按钮 -->
+                            <div class="mt10 flex-row flex-left" v-if="gdsdTimeList.length>1">
+                                <el-link type="primary" class="mr10" @click="gdsdTimePush()"
+                                    v-if="gdsdTimeList.length==(idx+1)">添加</el-link>
+                                <el-link type="danger" class="mr10" @click="gdsdTimeDel(idx)" v-if="idx>0">
+                                    删除
+                                </el-link>
+                            </div>
+                        </div>
+
+                        <!-- 添加按钮 -->
+                        <div class="mt10 flex-row flex-left" v-if="gdsdTimeList.length==1">
+                            <el-link type="primary" class="mr10" @click="gdsdTimePush()">添加</el-link>
+                        </div>
+                    </div>
+                </div>
+                <!-- 适用周期 -->
+                <div class="flex-row h44 mt10">
+                    <div class="w120 flex-row flex-right">
+                        <div class="fwb cr mr5">*</div>
+                        <div class="c9">适用周期：</div>
+                    </div>
+                    <div class="flex-full ml20">
+                        <el-checkbox-group v-model="checkboxGroup" size="small">
+                            <el-checkbox-button v-for="(week,index) in weekOptions" :label="index" :key="index">
+                                {{week.cname}}
+                            </el-checkbox-button>
+                        </el-checkbox-group>
+                    </div>
+                </div>
+            </div>
+            <!-- 按钮 -->
+            <span slot="footer" class="dialog-footer">
+                <el-button size="small" @click="dialogAddVisible = false">取 消</el-button>
+                <el-button size="small" type="primary" @click="addSubmit">确 定</el-button>
+            </span>
+        </el-dialog>
+
+        <!-- 选择成员弹框 -->
+        <el-dialog title="选择企业成员" class="d-tree" :visible.sync="dialogSelVisible">
+            <v-tree :seldata="dialogIndex.data" :radio="radio" @selreset="selreset" @selsubmit="selsubmit"></v-tree>
+        </el-dialog>
+    </div>
+    <script src="./js/vue.min-2.6.11.js"></script>
+    <script src="./element/index.js"></script>
+    <script src="./js/components.js"></script>
+    <script src="./js/new_c1.js"></script>
+</body>
+
+</html>
